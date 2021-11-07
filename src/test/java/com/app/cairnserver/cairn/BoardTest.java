@@ -25,7 +25,14 @@ public class BoardTest {
     @Test
     public void testMinMax() {
 
-        MinMaxTemplate.minimaxDecision(new State(new Board(), 0));
+        final Board bestMove = MinMaxTemplate.minimaxDecision(new State(new Board(), 0)).board();
+
+        BitboardUtils.printBitboard(bestMove.bluePieces, bestMove.redPieces);
+
+        final Board nextBestMove = MinMaxTemplate.minimaxDecision(new State(bestMove, 0)).board();
+
+        BitboardUtils.printBitboard(nextBestMove.bluePieces, nextBestMove.redPieces);
+
     }
 
 

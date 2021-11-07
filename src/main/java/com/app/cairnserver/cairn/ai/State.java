@@ -14,10 +14,6 @@ public record State(Board board, int step) {
 
         final Map<Integer, Integer> allPossibleMoves = BoardUtils.getPossibleMoves(board);
 
-
-        System.out.println("All possible moves");
-        System.out.println(allPossibleMoves);
-
         final Collection<Board> boards = allPossibleMoves.entrySet().stream().flatMap(moves -> {
 
             final Collection<Board> allBoardMoves = new HashSet<>();
@@ -25,20 +21,15 @@ public record State(Board board, int step) {
             for (int j = 1; j < 26; j++) {
                 if ((moves.getValue() & 1 << j) != 0) {
                     final Board movedBoard = BoardUtils.movePiece(board, moves.getKey(), moves.getValue() & 1 << j);
-                    System.out.println("Printing blue and red pieces");
-                    System.out.println("Score: " + movedBoard.blueScore + " : " + movedBoard.redScore);
-                    System.out.println("In Play: " + movedBoard.bluePiecesInPlay + " : " + movedBoard.redPiecesInPlay);
-                    BitboardUtils.printBitboard(movedBoard.bluePieces, movedBoard.redPieces);
+                  //  BitboardUtils.printBitboard(movedBoard.bluePieces, movedBoard.redPieces);
                     allBoardMoves.add(movedBoard);
                 }
             }
 
-            if (BoardUtils.countPiecesInPlay(board) < 5) {
-                System.out.println("Adding shaman");
+            if (BoardUtils.countPiecesInPlay(board) < 10) {
                 allBoardMoves.add(BoardUtils.addShaman(board));
             }
 
-            System.out.println("All Possible Moves END");
             return allBoardMoves.stream();
         }).collect(Collectors.toSet());
 
@@ -50,11 +41,15 @@ public record State(Board board, int step) {
     }
 
     public boolean isTerminal() {
-        return board.blueScore == 4 || board.redScore == 4 || step == 5;
+        return board.blueScore == 4 || board.redScore == 4 || step > 5;
     }
 
     public double getUtility() {
-      return board.blueScore - board.redScore;
+      if(board.blueScore - board.redScore >= 0) {
+          return 1;
+      } else {
+          return -1;
+      }
     }
 
 }
