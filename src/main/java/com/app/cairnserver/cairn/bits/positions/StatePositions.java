@@ -1,6 +1,6 @@
-package com.app.cairnserver.cairn;
+package com.app.cairnserver.cairn.bits.positions;
 
-public class StatePosition {
+public class StatePositions {
 
     public static final int CURRENT_PLAYER = 1 << 0;
     public static final int ADD_SHAMAN = 1 << 1;

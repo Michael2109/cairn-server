@@ -1,6 +1,7 @@
 package com.app.cairnserver.cairn.board;
 
-import com.app.cairnserver.cairn.BoardPositions;
+import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
+import com.app.cairnserver.cairn.bits.positions.StatePositions;
 
 public class Board {
 
@@ -15,7 +16,7 @@ public class Board {
     public final int allPieces;
 
     public Board() {
-        this(0, 0, 0, ( BoardPositions.A1) | ( BoardPositions.C1) | ( BoardPositions.E1), ( BoardPositions.A5) | ( BoardPositions.C5) | (BoardPositions.E5));
+        this(StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN | StatePositions.JUMP_SHAMAN | StatePositions.MOVE_SHAMAN | StatePositions.TRANSFORMATION, 0, 0, (BitboardPositions.A1) | (BitboardPositions.C1) | (BitboardPositions.E1), (BitboardPositions.A5) | (BitboardPositions.C5) | (BitboardPositions.E5));
     }
 
     public Board(final int state, final int blueScore, final int redScore, final int bluePieces, final int redPieces) {

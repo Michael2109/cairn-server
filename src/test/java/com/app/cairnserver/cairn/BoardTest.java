@@ -1,9 +1,27 @@
 package com.app.cairnserver.cairn;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.app.cairnserver.cairn.ai.MinMaxTemplate;
+import com.app.cairnserver.cairn.ai.State;
+import com.app.cairnserver.cairn.bits.BitboardUtils;
+import com.app.cairnserver.cairn.bits.StateUtils;
+import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
+import com.app.cairnserver.cairn.board.Board;
+import com.app.cairnserver.cairn.board.BoardUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class BoardTest {
-/*
+
+    @Test
+    public void testInitialState(){
+        final Board board = new Board();
+        Assertions.assertTrue(StateUtils.getCurrentPlayer(board.state));
+        Assertions.assertTrue(StateUtils.getAddShaman(board.state));
+        Assertions.assertTrue(StateUtils.getJumpShaman(board.state));
+        Assertions.assertTrue(StateUtils.getMoveShaman(board.state));
+        Assertions.assertTrue(StateUtils.getTransformation(board.state));
+    }
+
     @Test
     public void testMinMax() {
 
@@ -11,29 +29,13 @@ public class BoardTest {
     }
 
 
-
     @Test
     public void testMovePiece() {
 
         final Board board = new Board();
-        final Board updatedBoard = BoardUtils.movePiece(board, 1 << Positions.A1, 1 << Positions.A2);
+        final Board updatedBoard = BoardUtils.movePiece(board, BitboardPositions.A1, BitboardPositions.A2);
 
-     */
-/* Assertions.assertEquals(false , updatedBoard.currentPlayer);
-
-        BitboardUtils.printBitboard(board.allPieces);
-        Assertions.assertEquals(1 << Positions.D1, BitboardUtils.computeAddShaman(0, true, AddShaman.ADD_SHAMAN_ACTION_WHITE));*//*
-
+        Assertions.assertFalse(StateUtils.getCurrentPlayer(updatedBoard.state));
+        Assertions.assertFalse(StateUtils.getMoveShaman(updatedBoard.state));
     }
-
-    @Test
-    public void testMovePieceInvalid() {
-        final Board board = new Board();
-
-        Exception exception = assertThrows(Exception.class, () -> {
-            BoardUtils.movePiece(board, 1 << Positions.A1, 1 << Positions.A3);
-        });
-    }
-*/
-
 }

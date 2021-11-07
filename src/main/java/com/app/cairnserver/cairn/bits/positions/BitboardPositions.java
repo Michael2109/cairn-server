@@ -1,6 +1,6 @@
-package com.app.cairnserver.cairn;
+package com.app.cairnserver.cairn.bits.positions;
 
-public class BoardPositions {
+public class BitboardPositions {
 
     public static int RED_EXIT = 1;
     public static int A1 = 1 << 1;

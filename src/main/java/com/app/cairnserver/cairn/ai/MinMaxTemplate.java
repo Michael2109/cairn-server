@@ -28,6 +28,4 @@ public final class MinMaxTemplate {
                 .map(MinMaxTemplate::maxValue)
                 .min(Comparator.comparing(Double::valueOf)).get();
     }
-
-    //State Class
 }

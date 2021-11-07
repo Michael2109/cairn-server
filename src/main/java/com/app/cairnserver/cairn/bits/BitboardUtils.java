@@ -1,5 +1,7 @@
-package com.app.cairnserver.cairn;
+package com.app.cairnserver.cairn.bits;
 
+import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
+import com.app.cairnserver.cairn.bits.positions.StatePositions;
 import com.app.cairnserver.cairn.board.Board;
 
 import java.util.Arrays;
@@ -35,16 +37,16 @@ public class BitboardUtils {
         int possibleMove = 0;
 
         if (piecesInPlay != 5) {
-            if((boardState & StatePosition.ADD_SHAMAN) != 0){
+            if((boardState & StatePositions.ADD_SHAMAN) != 0){
 
                 // Add Shaman White
                     if (blue) {
-                        if ((pieces & 1 << BoardPositions.A4) == 0) {
-                            possibleMove = 1 << BoardPositions.D1;
+                        if ((pieces & 1 << BitboardPositions.A4) == 0) {
+                            possibleMove = 1 << BitboardPositions.D1;
                         }
                     } else {
-                        if ((pieces & 1 << BoardPositions.B5) == 0) {
-                            possibleMove = 1 << BoardPositions.B5;
+                        if ((pieces & 1 << BitboardPositions.B5) == 0) {
+                            possibleMove = 1 << BitboardPositions.B5;
                         }
                     }
 
@@ -52,12 +54,12 @@ public class BitboardUtils {
                else {
                    // Add Shaman Black
                     if (blue) {
-                        if ((pieces & 1 << BoardPositions.A2) == 0) {
-                            possibleMove = 1 << BoardPositions.B1;
+                        if ((pieces & 1 << BitboardPositions.A2) == 0) {
+                            possibleMove = 1 << BitboardPositions.B1;
                         }
                     } else {
-                        if ((pieces & 1 << BoardPositions.D5) == 0) {
-                            possibleMove = 1 << BoardPositions.D5;
+                        if ((pieces & 1 << BitboardPositions.D5) == 0) {
+                            possibleMove = 1 << BitboardPositions.D5;
                         }
                     }
 
@@ -72,7 +74,7 @@ public class BitboardUtils {
 
         final int possibleMoves;
 
-        if ((boardState & StatePosition.MOVE_SHAMAN) != 0) {
+        if ((boardState & StatePositions.MOVE_SHAMAN) != 0) {
             possibleMoves = computeMoveStraight(position, allPieces);
         } else {
             possibleMoves = computeMoveDiagonal(position, allPieces);
@@ -81,17 +83,17 @@ public class BitboardUtils {
         final int movesWithExits;
 
         // Handle exits
-        if ((boardState & StatePosition.CURRENT_PLAYER) != 0) {
+        if ((boardState & StatePositions.CURRENT_PLAYER) != 0) {
             if ((position & RANK_5) != 0) {
-                movesWithExits = possibleMoves | (BoardPositions.BLUE_EXIT);
+                movesWithExits = possibleMoves | (BitboardPositions.BLUE_EXIT);
             } else {
-                movesWithExits = possibleMoves & ~( BoardPositions.BLUE_EXIT);
+                movesWithExits = possibleMoves & ~( BitboardPositions.BLUE_EXIT);
             }
         } else {
             if ((position & RANK_1) != 0) {
-                movesWithExits = possibleMoves | ( BoardPositions.RED_EXIT);
+                movesWithExits = possibleMoves | ( BitboardPositions.RED_EXIT);
             } else {
-                movesWithExits = possibleMoves & ~( BoardPositions.RED_EXIT);
+                movesWithExits = possibleMoves & ~( BitboardPositions.RED_EXIT);
             }
         }
 
@@ -152,19 +154,19 @@ public class BitboardUtils {
     }
 
     public static boolean checkBlueExit(final int pieces){
-        return (pieces & BoardPositions.BLUE_EXIT) != 0;
+        return (pieces & BitboardPositions.BLUE_EXIT) != 0;
     }
 
     public static boolean checkRedExit(final int pieces){
-        return (pieces & BoardPositions.RED_EXIT) != 0;
+        return (pieces & BitboardPositions.RED_EXIT) != 0;
     }
 
     public static int clearBlueExit(final int bluePieces){
-        return bluePieces & ~BoardPositions.BLUE_EXIT;
+        return bluePieces & ~BitboardPositions.BLUE_EXIT;
     }
 
     public static int clearRedExit(final int redPieces){
-        return redPieces & ~BoardPositions.RED_EXIT;
+        return redPieces & ~BitboardPositions.RED_EXIT;
     }
 
     private static long[] getAllPositions() {
@@ -214,10 +216,6 @@ public class BitboardUtils {
         System.out.println("----------------------------------");
         System.out.println();
 
-    }
-
-    public static int changePlayer(final int boardState){
-        return boardState ^ StatePosition.CURRENT_PLAYER;
     }
 
     public static void printBitboardBinary(final int bitboard) {
