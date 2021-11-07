@@ -25,7 +25,7 @@ public class BoardTest {
     @Test
     public void testMinMax() {
 
-        MinMaxTemplate.minimaxDecision(new State(new Board()));
+        MinMaxTemplate.minimaxDecision(new State(new Board(), 0));
     }
 
 

@@ -29,7 +29,7 @@ public class BitboardUtils {
     private static final int[] RANK_MASK = {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5};
     private static final int[] FILE_MASK = {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E};
 
-    public static int computeAddShaman(final int pieces, final boolean blue, final int boardState) {
+    public static int computeAddShaman(final int pieces, final int boardState) {
 
         // Check if there are pieces available to add
         final int piecesInPlay = countTotalPieces(pieces);
@@ -40,7 +40,7 @@ public class BitboardUtils {
             if((boardState & StatePositions.ADD_SHAMAN) != 0){
 
                 // Add Shaman White
-                    if (blue) {
+                    if (StateUtils.getCurrentPlayer(boardState)) {
                         if ((pieces & 1 << BitboardPositions.A4) == 0) {
                             possibleMove = 1 << BitboardPositions.D1;
                         }
@@ -53,7 +53,7 @@ public class BitboardUtils {
                 }
                else {
                    // Add Shaman Black
-                    if (blue) {
+                    if (StateUtils.getCurrentPlayer(boardState)) {
                         if ((pieces & 1 << BitboardPositions.A2) == 0) {
                             possibleMove = 1 << BitboardPositions.B1;
                         }
@@ -186,6 +186,43 @@ public class BitboardUtils {
             //   final long moves = getValidMoves(board, position);
 
         });
+    }
+
+    public static void printBitboard(final int bluePieces, final int redPieces) {
+        final String fullBinaryBlue = String.format("%32s", Integer.toBinaryString(bluePieces)).replace(' ', '0');
+        final String fullBinaryRed = String.format("%32s", Integer.toBinaryString(redPieces)).replace(' ', '0');
+
+        final StringBuilder sb1 = new StringBuilder();
+        for(int i = 0; i < 32; i++){
+            if(fullBinaryRed.charAt(i) != '0'){
+                sb1.append('2');
+            } else {
+                sb1.append(fullBinaryBlue.charAt(i));
+            }
+        }
+
+        final String fullBinary = sb1.toString();
+
+        final char redExitBit = fullBinary.charAt(5);
+        final char blueExitBit = fullBinary.charAt(31);
+
+        final String binary = fullBinary.substring(6).substring(0, 25);
+
+        final List<Character> chars = binary.chars().mapToObj(e -> (char) e).collect(Collectors.toList());
+
+        final List<List<Character>> rows = getBatches(chars, 5);
+
+        System.out.println("----------------------------------");
+        rows.stream().forEach(row -> {
+            final StringBuilder sb = new StringBuilder();
+            Collections.reverse(row);
+            row.forEach(character -> sb.append(character));
+
+            System.out.println(sb);
+        });
+        System.out.println("----------------------------------");
+        System.out.println();
+
     }
 
     public static void printBitboard(final int bitboard) {

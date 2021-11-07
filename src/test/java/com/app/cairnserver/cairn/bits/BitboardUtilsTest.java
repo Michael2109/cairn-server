@@ -17,16 +17,16 @@ public class BitboardUtilsTest {
 
     @Test
     public void testAddShaman() {
-        Assertions.assertEquals(1 << BitboardPositions.D1, BitboardUtils.computeAddShaman(0, true, StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN));
-        Assertions.assertEquals(1 << BitboardPositions.B1, BitboardUtils.computeAddShaman(0, true, StatePositions.CURRENT_PLAYER));
-        Assertions.assertEquals(1 << BitboardPositions.B5, BitboardUtils.computeAddShaman(0, false, StatePositions.ADD_SHAMAN));
-        Assertions.assertEquals(1 << BitboardPositions.D5, BitboardUtils.computeAddShaman(0, false, 0));
+        Assertions.assertEquals(1 << BitboardPositions.D1, BitboardUtils.computeAddShaman(0, StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN));
+        Assertions.assertEquals(1 << BitboardPositions.B1, BitboardUtils.computeAddShaman(0, StatePositions.CURRENT_PLAYER));
+        Assertions.assertEquals(1 << BitboardPositions.B5, BitboardUtils.computeAddShaman(0, StatePositions.ADD_SHAMAN));
+        Assertions.assertEquals(1 << BitboardPositions.D5, BitboardUtils.computeAddShaman(0, 0));
 
         // Spaces occupied
-        Assertions.assertEquals(0, BitboardUtils.computeAddShaman(Integer.MAX_VALUE, true, StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN));
-        Assertions.assertEquals(0, BitboardUtils.computeAddShaman(Integer.MAX_VALUE, true, StatePositions.CURRENT_PLAYER));
-        Assertions.assertEquals(0, BitboardUtils.computeAddShaman(Integer.MAX_VALUE, false, StatePositions.ADD_SHAMAN));
-        Assertions.assertEquals(0, BitboardUtils.computeAddShaman(Integer.MAX_VALUE, false, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeAddShaman(Integer.MAX_VALUE, StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN));
+        Assertions.assertEquals(0, BitboardUtils.computeAddShaman(Integer.MAX_VALUE, StatePositions.CURRENT_PLAYER));
+        Assertions.assertEquals(0, BitboardUtils.computeAddShaman(Integer.MAX_VALUE, StatePositions.ADD_SHAMAN));
+        Assertions.assertEquals(0, BitboardUtils.computeAddShaman(Integer.MAX_VALUE, 0));
     }
 
     @Test

@@ -8,6 +8,9 @@ public class Board {
     public final int blueScore;
     public final int redScore;
 
+    public final int bluePiecesInPlay;
+    public final int redPiecesInPlay;
+
     // Stores state such as current Add Shaman type, Jump Shaman, Transformation, Player etc
     public final int state;
 
@@ -16,15 +19,17 @@ public class Board {
     public final int allPieces;
 
     public Board() {
-        this(StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN | StatePositions.JUMP_SHAMAN | StatePositions.MOVE_SHAMAN | StatePositions.TRANSFORMATION, 0, 0, (BitboardPositions.A1) | (BitboardPositions.C1) | (BitboardPositions.E1), (BitboardPositions.A5) | (BitboardPositions.C5) | (BitboardPositions.E5));
+        this(StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN | StatePositions.JUMP_SHAMAN | StatePositions.MOVE_SHAMAN | StatePositions.TRANSFORMATION, 0, 0, (BitboardPositions.A1) | (BitboardPositions.C1) | (BitboardPositions.E1), (BitboardPositions.A5) | (BitboardPositions.C5) | (BitboardPositions.E5), 3, 3);
     }
 
-    public Board(final int state, final int blueScore, final int redScore, final int bluePieces, final int redPieces) {
+    public Board(final int state, final int blueScore, final int redScore, final int bluePieces, final int redPieces, final int bluePiecesInPlay, final int redPiecesInPlay) {
         this.state = state;
         this.blueScore = blueScore;
         this.redScore = redScore;
         this.bluePieces = bluePieces;
         this.redPieces = redPieces;
+        this.bluePiecesInPlay = bluePiecesInPlay;
+        this.redPiecesInPlay = redPiecesInPlay;
         allPieces = bluePieces | redPieces;
     }
 }
