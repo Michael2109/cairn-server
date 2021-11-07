@@ -73,9 +73,9 @@ public class BitboardUtils {
         final int possibleMoves;
 
         if ((boardState & StatePosition.MOVE_SHAMAN) != 0) {
-            possibleMoves = computeMoveStraight(position, allPieces, boardState);
+            possibleMoves = computeMoveStraight(position, allPieces);
         } else {
-            possibleMoves = computeMoveDiagonal(position, allPieces, boardState);
+            possibleMoves = computeMoveDiagonal(position, allPieces);
         }
 
         final int movesWithExits;
@@ -98,7 +98,7 @@ public class BitboardUtils {
         return movesWithExits & (~allPieces) & ALL_POSITIONS;
     }
 
-    private static int computeMoveStraight(final int position, final int otherPieces, final int boardState) {
+    private static int computeMoveStraight(final int position, final int otherPieces) {
         //   1
         // 4 S 2
         //   3
@@ -118,7 +118,7 @@ public class BitboardUtils {
     }
 
 
-    private static int computeMoveDiagonal(final int position, final int otherPieces, final int boardState) {
+    private static int computeMoveDiagonal(final int position, final int otherPieces) {
         // 1   3
         //   S
         // 7   5
@@ -137,6 +137,10 @@ public class BitboardUtils {
         return moves & (~otherPieces) & ALL_POSITIONS;
     }
 
+    public static int movePiece(final int pieces, final int sourcePosition, final int targetPosition){
+        return (pieces & ~sourcePosition) | targetPosition;
+    }
+
     public static int countTotalPieces(final int pieces) {
         int count = 0;
         for (int i = 0; i < 32; i++) {
@@ -145,6 +149,22 @@ public class BitboardUtils {
             }
         }
         return count;
+    }
+
+    public static boolean checkBlueExit(final int pieces){
+        return (pieces & BoardPositions.BLUE_EXIT) != 0;
+    }
+
+    public static boolean checkRedExit(final int pieces){
+        return (pieces & BoardPositions.RED_EXIT) != 0;
+    }
+
+    public static int clearBlueExit(final int bluePieces){
+        return bluePieces & ~BoardPositions.BLUE_EXIT;
+    }
+
+    public static int clearRedExit(final int redPieces){
+        return redPieces & ~BoardPositions.RED_EXIT;
     }
 
     private static long[] getAllPositions() {

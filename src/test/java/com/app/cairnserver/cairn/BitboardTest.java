@@ -1,5 +1,6 @@
 package com.app.cairnserver.cairn;
 
+import com.app.cairnserver.cairn.board.Board;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -66,11 +67,37 @@ public class BitboardTest {
     @Test
     public void testChangePlayer(){
         final int nextPlayer = BitboardUtils.changePlayer(0);
-        BitboardUtils.printBitboard(nextPlayer);
-
         Assertions.assertEquals(StatePosition.CURRENT_PLAYER, nextPlayer & StatePosition.CURRENT_PLAYER);
 
         final int originalPlayer = BitboardUtils.changePlayer(nextPlayer);
         Assertions.assertEquals(0, originalPlayer);
+    }
+
+    @Test
+    public void testCheckExits(){
+        Assertions.assertTrue(BitboardUtils.checkBlueExit(BoardPositions.BLUE_EXIT));
+        Assertions.assertFalse(BitboardUtils.checkBlueExit(0));
+
+        Assertions.assertTrue(BitboardUtils.checkRedExit(BoardPositions.RED_EXIT));
+        Assertions.assertFalse(BitboardUtils.checkRedExit(0));
+    }
+
+    @Test
+    public void testClearExits(){
+        Assertions.assertEquals(0, BitboardUtils.clearBlueExit(BoardPositions.BLUE_EXIT));
+        Assertions.assertEquals(0, BitboardUtils.clearBlueExit(0));
+
+        Assertions.assertEquals(0, BitboardUtils.clearRedExit(BoardPositions.RED_EXIT));
+        Assertions.assertEquals(0, BitboardUtils.clearRedExit(0));
+    }
+
+
+    @Test
+    public void testMovePieces(){
+        Assertions.assertEquals(BoardPositions.C5, BitboardUtils.movePiece(BoardPositions.A1, BoardPositions.A1, BoardPositions.C5));
+        Assertions.assertEquals(BoardPositions.E5, BitboardUtils.movePiece(BoardPositions.E1, BoardPositions.E1, BoardPositions.E5));
+        Assertions.assertEquals(BoardPositions.E1, BitboardUtils.movePiece(BoardPositions.B5, BoardPositions.B5, BoardPositions.E1));
+        Assertions.assertEquals(BoardPositions.A5, BitboardUtils.movePiece(BoardPositions.A5, BoardPositions.A5, BoardPositions.A5));
+        Assertions.assertEquals(BoardPositions.A1, BitboardUtils.movePiece(BoardPositions.E5, BoardPositions.E5, BoardPositions.A1));
     }
 }
