@@ -10,6 +10,8 @@ import com.app.cairnserver.cairn.board.BoardUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Scanner;
+
 public class BoardTest {
 
     @Test
@@ -22,16 +24,18 @@ public class BoardTest {
         Assertions.assertTrue(StateUtils.getTransformation(board.state));
     }
 
-    @Test
-    public void testMinMax() {
 
-        final Board bestMove = MinMaxTemplate.minimaxDecision(new State(new Board(), 0)).board();
+    public static void main(String args[]) {
 
-        BitboardUtils.printBitboard(bestMove.bluePieces, bestMove.redPieces);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Start");
+        Board nextMove = new Board();
+        while(sc.hasNextLine()){
+           sc.nextLine();
 
-        final Board nextBestMove = MinMaxTemplate.minimaxDecision(new State(bestMove, 0)).board();
-
-        BitboardUtils.printBitboard(nextBestMove.bluePieces, nextBestMove.redPieces);
+            nextMove = MinMaxTemplate.minimaxDecision(new State(nextMove, 0)).board();
+            BitboardUtils.printBitboard(nextMove.bluePieces, nextMove.redPieces);
+        }
 
     }
 

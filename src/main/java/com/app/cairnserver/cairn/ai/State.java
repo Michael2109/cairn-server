@@ -26,7 +26,7 @@ public record State(Board board, int step) {
                 }
             }
 
-            if (BoardUtils.countPiecesInPlay(board) < 10) {
+            if (BoardUtils.countPiecesInPlay(board) < 5 && BitboardUtils.computeAddShaman(board.allPieces, board.state) != 0) {
                 allBoardMoves.add(BoardUtils.addShaman(board));
             }
 
@@ -41,11 +41,11 @@ public record State(Board board, int step) {
     }
 
     public boolean isTerminal() {
-        return board.blueScore == 4 || board.redScore == 4 || step > 5;
+        return board.blueScore == 4 || board.redScore == 4 || step > 6;
     }
 
     public double getUtility() {
-      if(board.blueScore - board.redScore >= 0) {
+      if(board.blueScore > board.redScore) {
           return 1;
       } else {
           return -1;

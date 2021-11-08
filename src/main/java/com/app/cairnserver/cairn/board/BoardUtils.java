@@ -6,12 +6,13 @@ import com.app.cairnserver.cairn.bits.StateUtils;
 import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class BoardUtils {
 
     public static Map<Integer, Integer> getPossibleMoves(final Board board) {
-        final Map<Integer, Integer> allPossibleMoves = new HashMap<>();
+        final Map<Integer, Integer> allPossibleMoves = new LinkedHashMap<>();
         for (int i = 1; i < 26; i++) {
             if (StateUtils.getCurrentPlayer(board.state)) {
                 if ((board.bluePieces & 1 << i) != 0) {

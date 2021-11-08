@@ -41,12 +41,12 @@ public class BitboardUtils {
 
                 // Add Shaman White
                     if (StateUtils.getCurrentPlayer(boardState)) {
-                        if ((pieces & 1 << BitboardPositions.A4) == 0) {
-                            possibleMove = 1 << BitboardPositions.D1;
+                        if ((pieces & BitboardPositions.A4) == 0) {
+                            possibleMove = BitboardPositions.D1;
                         }
                     } else {
-                        if ((pieces & 1 << BitboardPositions.B5) == 0) {
-                            possibleMove = 1 << BitboardPositions.B5;
+                        if ((pieces & BitboardPositions.B5) == 0) {
+                            possibleMove = BitboardPositions.B5;
                         }
                     }
 
@@ -54,12 +54,12 @@ public class BitboardUtils {
                else {
                    // Add Shaman Black
                     if (StateUtils.getCurrentPlayer(boardState)) {
-                        if ((pieces & 1 << BitboardPositions.A2) == 0) {
-                            possibleMove = 1 << BitboardPositions.B1;
+                        if ((pieces &  BitboardPositions.A2) == 0) {
+                            possibleMove = BitboardPositions.B1;
                         }
                     } else {
-                        if ((pieces & 1 << BitboardPositions.D5) == 0) {
-                            possibleMove = 1 << BitboardPositions.D5;
+                        if ((pieces & BitboardPositions.D5) == 0) {
+                            possibleMove = BitboardPositions.D5;
                         }
                     }
 
