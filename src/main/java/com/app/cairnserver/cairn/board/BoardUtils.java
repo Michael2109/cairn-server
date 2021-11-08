@@ -1,15 +1,16 @@
 package com.app.cairnserver.cairn.board;
 
-import com.app.cairnserver.cairn.ai.State;
 import com.app.cairnserver.cairn.bits.BitboardUtils;
 import com.app.cairnserver.cairn.bits.StateUtils;
 import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class BoardUtils {
+
+    private static final int SCORE_MULTIPLIER = 200;
+    private static final int RANK_MULTIPLIER = 10;
 
     public static Map<Integer, Integer> getPossibleMoves(final Board board) {
         final Map<Integer, Integer> allPossibleMoves = new LinkedHashMap<>();
@@ -30,22 +31,22 @@ public class BoardUtils {
         return allPossibleMoves;
     }
 
-    public static int countPiecesInPlay(final Board board){
-        return StateUtils.getCurrentPlayer(board.state) ?  board.bluePiecesInPlay : board.redPiecesInPlay;
+    public static int countPiecesInPlay(final Board board) {
+        return StateUtils.getCurrentPlayer(board.state) ? board.bluePiecesInPlay : board.redPiecesInPlay;
     }
 
-    public static Board addShaman(final Board board){
+    public static Board addShaman(final Board board) {
 
         int bluePieces = board.bluePieces;
         int redPieces = board.redPieces;
         int bluePiecesInPlay = board.bluePiecesInPlay;
         int redPiecesInPlay = board.redPiecesInPlay;
-        if(StateUtils.getCurrentPlayer(board.state)){
-           final int addShamanMove =  BitboardUtils.computeAddShaman(bluePieces, board.state);
-           bluePieces = bluePieces | addShamanMove;
-           bluePiecesInPlay++;
-        }else {
-            final int addShamanMove =  BitboardUtils.computeAddShaman(redPieces, board.state);
+        if (StateUtils.getCurrentPlayer(board.state)) {
+            final int addShamanMove = BitboardUtils.computeAddShaman(bluePieces, board.state);
+            bluePieces = bluePieces | addShamanMove;
+            bluePiecesInPlay++;
+        } else {
+            final int addShamanMove = BitboardUtils.computeAddShaman(redPieces, board.state);
             redPieces = redPieces | addShamanMove;
             redPiecesInPlay++;
         }
@@ -89,5 +90,27 @@ public class BoardUtils {
         } else {
             throw new RuntimeException("Move not allowed!");
         }
+    }
+
+    public static double scoreBlueBitboard(final int bluePieces, final int redPieces) {
+        double score = 0;
+        // Add score based on how far moved forward
+        for (int i = 0; i < 5; i++) {
+            final int bitsInRankBlue = Integer.bitCount(bluePieces & BitboardUtils.RANK_MASK[i]);
+            final int bitsInRankRed = Integer.bitCount(redPieces & BitboardUtils.RANK_MASK[4 - i]);
+
+            score += (i + 1) * (i + 1) * RANK_MULTIPLIER * bitsInRankBlue;
+            score -= (i + 1) * (i + 1) * RANK_MULTIPLIER * bitsInRankRed;
+        }
+        return score;
+    }
+
+    public static double scoreBoard(final Board board, final boolean blue) {
+        double score = board.blueScore * SCORE_MULTIPLIER - board.redScore * SCORE_MULTIPLIER;
+        score += scoreBlueBitboard(board.bluePieces, board.redPieces);
+        if (!blue) {
+            score *= -1;
+        }
+        return score;
     }
 }

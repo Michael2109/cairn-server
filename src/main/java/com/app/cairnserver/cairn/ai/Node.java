@@ -7,10 +7,12 @@ import com.app.cairnserver.cairn.board.BoardUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public record State(Board board, int step) {
+public record Node(Board board, int step, boolean blue) {
 
-    public Collection<State> getActions() {
-        final List<State> actions = new LinkedList<>();
+
+    public Collection<Node> getNodes() {
+        final List<Node> actions = new LinkedList<>();
+
 
         final Map<Integer, Integer> allPossibleMoves = BoardUtils.getPossibleMoves(board);
 
@@ -21,35 +23,31 @@ public record State(Board board, int step) {
             for (int j = 1; j < 26; j++) {
                 if ((moves.getValue() & 1 << j) != 0) {
                     final Board movedBoard = BoardUtils.movePiece(board, moves.getKey(), moves.getValue() & 1 << j);
-                  //  BitboardUtils.printBitboard(movedBoard.bluePieces, movedBoard.redPieces);
+                    //  BitboardUtils.printBitboard(movedBoard.bluePieces, movedBoard.redPieces);
                     allBoardMoves.add(movedBoard);
                 }
             }
 
             if (BoardUtils.countPiecesInPlay(board) < 5 && BitboardUtils.computeAddShaman(board.allPieces, board.state) != 0) {
-                allBoardMoves.add(BoardUtils.addShaman(board));
+             //   allBoardMoves.add(BoardUtils.addShaman(board));
             }
 
             return allBoardMoves.stream();
         }).collect(Collectors.toSet());
 
         boards.forEach(board -> {
-            actions.add(new State(board, step+1));
+            actions.add(new Node(board, step + 1, blue));
         });
 
         return actions;
     }
 
     public boolean isTerminal() {
-        return board.blueScore == 4 || board.redScore == 4 || step > 6;
+        return board.blueScore == 4 || board.redScore == 4 || step > 9;
     }
 
     public double getUtility() {
-      if(board.blueScore > board.redScore) {
-          return 1;
-      } else {
-          return -1;
-      }
-    }
 
+      return BoardUtils.scoreBoard(board, blue);
+    }
 }

@@ -26,8 +26,8 @@ public class BitboardUtils {
     public static final int FILE_D = 0b000010000100001000010000100;
     public static final int FILE_E = 0b000001000010000100001000010;
     private static final int ALL_POSITIONS = 0b1111111111111111111111111111;
-    private static final int[] RANK_MASK = {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5};
-    private static final int[] FILE_MASK = {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E};
+    public static final int[] RANK_MASK = {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5};
+    public static final int[] FILE_MASK = {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E};
 
     public static int computeAddShaman(final int pieces, final int boardState) {
 
