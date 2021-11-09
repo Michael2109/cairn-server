@@ -14,24 +14,24 @@ public class BoardUtils {
     private static final int RANK_MULTIPLIER = 10;
 
     public static Map<Integer, Collection<Integer>> getPossibleMoves(final Board board) {
-        final Map<Integer, Integer> allPossibleMoves = new LinkedHashMap<>();
+        final Map<Integer, Integer> groupedMoves = new LinkedHashMap<>();
         for (int i = 1; i < 26; i++) {
+
             if (StateUtils.getCurrentPlayer(board.state)) {
                 if ((board.bluePieces & 1 << i) != 0) {
                     final int possibleMoves = BitboardUtils.computeShamanMoves(1 << i, board.allPieces, board.state);
-                    allPossibleMoves.put(1 << i, possibleMoves);
+                    groupedMoves.put(1 << i, possibleMoves);
                 }
             } else {
                 if ((board.redPieces & 1 << i) != 0) {
                     final int possibleMoves = BitboardUtils.computeShamanMoves(1 << i, board.allPieces, board.state);
-                    allPossibleMoves.put(1 << i, possibleMoves);
+                    groupedMoves.put(1 << i, possibleMoves);
                 }
             }
         }
 
         final Map<Integer, Collection<Integer>> individualMoves = new HashMap<>();
-        allPossibleMoves.entrySet().forEach(entry -> {
-
+        groupedMoves.entrySet().forEach(entry -> {
             for (int j = 0; j < 27; j++) {
                 if ((entry.getValue() & 1 << j) != 0) {
 

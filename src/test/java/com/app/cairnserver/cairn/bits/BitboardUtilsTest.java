@@ -60,8 +60,11 @@ public class BitboardUtilsTest {
     public void testRedShamanMovesDiagonal() {
         Assertions.assertEquals(0b000000000000010100000001010000000, BitboardUtils.computeShamanMoves(BitboardPositions.C3, 0, 0));
         Assertions.assertEquals(0b00000000000000000000000010000001, BitboardUtils.computeShamanMoves( BitboardPositions.A1, 0, 0));
-        Assertions.assertEquals(0b00001000000000100000000000000000, BitboardUtils.computeShamanMoves( BitboardPositions.A5, 0, 0));
+        Assertions.assertEquals(0b00000000000000000000000101000001, BitboardUtils.computeShamanMoves( BitboardPositions.B1, 0, 0));
+        Assertions.assertEquals(0b00000000000000000000001010000001, BitboardUtils.computeShamanMoves( BitboardPositions.C1, 0, 0));
+        Assertions.assertEquals(0b00000000000000000000010100000001, BitboardUtils.computeShamanMoves( BitboardPositions.D1, 0, 0));
         Assertions.assertEquals(0b00000000000000000000001000000001, BitboardUtils.computeShamanMoves( BitboardPositions.E1, 0, 0));
+        Assertions.assertEquals(0b00001000000000100000000000000000, BitboardUtils.computeShamanMoves( BitboardPositions.A5, 0, 0));
         Assertions.assertEquals(0b00000000000010000000000000000000, BitboardUtils.computeShamanMoves(BitboardPositions.E5, 0, 0));
     }
 

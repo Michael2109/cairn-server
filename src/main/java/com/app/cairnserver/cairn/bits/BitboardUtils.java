@@ -96,7 +96,6 @@ public class BitboardUtils {
                 movesWithExits = possibleMoves & ~( BitboardPositions.RED_EXIT);
             }
         }
-
         return movesWithExits & (~allPieces) & ALL_POSITIONS;
     }
 
@@ -213,6 +212,7 @@ public class BitboardUtils {
         final List<List<Character>> rows = getBatches(chars, 5);
 
         System.out.println("----------------------------------");
+        System.out.println(blueExitBit);
         rows.stream().forEach(row -> {
             final StringBuilder sb = new StringBuilder();
             Collections.reverse(row);
@@ -220,8 +220,8 @@ public class BitboardUtils {
 
             System.out.println(sb);
         });
+        System.out.println(redExitBit);
         System.out.println("----------------------------------");
-        System.out.println();
 
     }
 
