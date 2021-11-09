@@ -5,7 +5,6 @@ import com.app.cairnserver.cairn.board.Board;
 import com.app.cairnserver.cairn.board.BoardUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public record Node(Board board, int step, boolean blue) {
 
@@ -14,28 +13,21 @@ public record Node(Board board, int step, boolean blue) {
         final List<Node> actions = new LinkedList<>();
 
 
-        final Map<Integer, Integer> allPossibleMoves = BoardUtils.getPossibleMoves(board);
+        final Map<Integer, Collection<Integer>> allPossibleMoves = BoardUtils.getPossibleMoves(board);
 
-        final Collection<Board> boards = allPossibleMoves.entrySet().stream().flatMap(moves -> {
+        final Collection<Board> allBoardMoves = new HashSet<>();
 
-            final Collection<Board> allBoardMoves = new HashSet<>();
-            // Split the moves into individual moves
-            for (int j = 1; j < 26; j++) {
-                if ((moves.getValue() & 1 << j) != 0) {
-                    final Board movedBoard = BoardUtils.movePiece(board, moves.getKey(), moves.getValue() & 1 << j);
-                    //  BitboardUtils.printBitboard(movedBoard.bluePieces, movedBoard.redPieces);
-                    allBoardMoves.add(movedBoard);
-                }
-            }
+        allPossibleMoves.entrySet().forEach(moves -> {
+            moves.getValue().forEach(target -> {
+                allBoardMoves.add(BoardUtils.movePiece(board, moves.getKey(), target));
+            });
+        });
 
-            if (BoardUtils.countPiecesInPlay(board) < 5 && BitboardUtils.computeAddShaman(board.allPieces, board.state) != 0) {
-             //   allBoardMoves.add(BoardUtils.addShaman(board));
-            }
+        if (BoardUtils.countPiecesInPlay(board) < 5 && BitboardUtils.computeAddShaman(board.allPieces, board.state) != 0) {
+            allBoardMoves.add(BoardUtils.addShaman(board));
+        }
 
-            return allBoardMoves.stream();
-        }).collect(Collectors.toSet());
-
-        boards.forEach(board -> {
+        allBoardMoves.forEach(board -> {
             actions.add(new Node(board, step + 1, blue));
         });
 
@@ -43,11 +35,11 @@ public record Node(Board board, int step, boolean blue) {
     }
 
     public boolean isTerminal() {
-        return board.blueScore == 4 || board.redScore == 4 || step > 9;
+        return board.blueScore == 4 || board.redScore == 4 || step > 3;
     }
 
     public double getUtility() {
 
-      return BoardUtils.scoreBoard(board, blue);
+        return BoardUtils.scoreBoard(board, blue);
     }
 }

@@ -5,6 +5,7 @@ import com.app.cairnserver.cairn.ai.Node;
 import com.app.cairnserver.cairn.bits.BitboardUtils;
 import com.app.cairnserver.cairn.bits.StateUtils;
 import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
+import com.app.cairnserver.cairn.bits.positions.StatePositions;
 import com.app.cairnserver.cairn.board.Board;
 import com.app.cairnserver.cairn.board.BoardUtils;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Scanner;
 
-public class BoardTest {
+public class BoardUtilsTest {
 
     @Test
     public void testInitialState(){
@@ -24,6 +25,14 @@ public class BoardTest {
         Assertions.assertTrue(StateUtils.getTransformation(board.state));
     }
 
+    @Test
+    public void testGetPossibleMoves(){
+        final Board board = new Board(~StatePositions.CURRENT_PLAYER | ~StatePositions.MOVE_SHAMAN,0, BitboardPositions.A1);
+
+      //  BoardUtils.getPossibleMoves(board).entrySet().forEach(moves -> moves.getValue().forEach(BitboardUtils::printBitboard));
+
+        BoardUtils.getPossibleMoves(board).entrySet().forEach(moves -> moves.getValue().forEach(BitboardUtils::printBitboard));
+    }
 
     public static void main(String args[]) {
 
@@ -82,7 +91,7 @@ public class BoardTest {
         Assertions.assertEquals(-40d, BoardUtils.scoreBlueBitboard(0, BitboardPositions.C4));
         Assertions.assertEquals(-10d, BoardUtils.scoreBlueBitboard(0, BitboardPositions.C5));
         Assertions.assertEquals(0, BoardUtils.scoreBlueBitboard(BitboardPositions.C5,  BitboardPositions.C1));
-        Assertions.assertEquals(0, BoardUtils.scoreBlueBitboard(BitboardPositions.A1 | BitboardPositions.C2 | BitboardPositions.E2,  BitboardPositions.A5 | BitboardPositions.C3 | BitboardPositions.E5));
+        Assertions.assertEquals(-20d, BoardUtils.scoreBlueBitboard(BitboardPositions.A1 | BitboardPositions.C2 | BitboardPositions.E2,  BitboardPositions.A5 | BitboardPositions.C3 | BitboardPositions.E5));
 
     }
 }

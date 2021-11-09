@@ -4,15 +4,16 @@ import com.app.cairnserver.cairn.bits.BitboardUtils;
 import com.app.cairnserver.cairn.bits.StateUtils;
 import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BoardUtils {
 
-    private static final int SCORE_MULTIPLIER = 200;
+    private static final int SCORE_MULTIPLIER = 500;
     private static final int RANK_MULTIPLIER = 10;
 
-    public static Map<Integer, Integer> getPossibleMoves(final Board board) {
+    public static Map<Integer, Collection<Integer>> getPossibleMoves(final Board board) {
         final Map<Integer, Integer> allPossibleMoves = new LinkedHashMap<>();
         for (int i = 1; i < 26; i++) {
             if (StateUtils.getCurrentPlayer(board.state)) {
@@ -28,7 +29,24 @@ public class BoardUtils {
             }
         }
 
-        return allPossibleMoves;
+        final Map<Integer, Collection<Integer>> individualMoves = new HashMap<>();
+        allPossibleMoves.entrySet().forEach(entry -> {
+
+            for (int j = 0; j < 27; j++) {
+                if ((entry.getValue() & 1 << j) != 0) {
+
+                    final int move = entry.getValue() & 1 << j;
+
+                    if(!individualMoves.containsKey(entry.getKey())){
+                        individualMoves.put(entry.getKey(), Stream.of(move).collect(Collectors.toSet()));
+                    }else {
+                        individualMoves.get(entry.getKey()).add(move);
+                    }
+                }
+            }
+        });
+
+        return individualMoves;
     }
 
     public static int countPiecesInPlay(final Board board) {

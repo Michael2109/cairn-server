@@ -18,8 +18,12 @@ public class Board {
     public final int redPieces;
     public final int allPieces;
 
-    public Board() {
-        this(StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN | StatePositions.JUMP_SHAMAN | StatePositions.MOVE_SHAMAN | StatePositions.TRANSFORMATION, 0, 0, (BitboardPositions.A1) | (BitboardPositions.C1) | (BitboardPositions.E1), (BitboardPositions.A5) | (BitboardPositions.C5) | (BitboardPositions.E5), 3, 3);
+    public Board(){
+        this(StatePositions.CURRENT_PLAYER | StatePositions.ADD_SHAMAN | StatePositions.JUMP_SHAMAN | StatePositions.MOVE_SHAMAN | StatePositions.TRANSFORMATION, BitboardPositions.A1 | BitboardPositions.C1 | BitboardPositions.E1, BitboardPositions.A5 | BitboardPositions.C5 | BitboardPositions.E5);
+    }
+
+    public Board(final int state, final int bluePieces, final int redPieces) {
+        this(state, 0, 0, bluePieces, redPieces, 3, 3);
     }
 
     public Board(final int state, final int blueScore, final int redScore, final int bluePieces, final int redPieces, final int bluePiecesInPlay, final int redPiecesInPlay) {
