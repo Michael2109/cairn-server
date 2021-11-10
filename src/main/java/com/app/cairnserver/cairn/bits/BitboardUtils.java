@@ -25,7 +25,8 @@ public class BitboardUtils {
     public static final int FILE_C = 0b000100001000010000100001000;
     public static final int FILE_D = 0b000010000100001000010000100;
     public static final int FILE_E = 0b000001000010000100001000010;
-    private static final int ALL_POSITIONS = 0b1111111111111111111111111111;
+    private static final int ALL_POSITIONS = 0b011111111111111111111111110;
+    private static final int ALL_POSITIONS_INCLUDING_EXITS = 0b111111111111111111111111111;
     public static final int[] RANK_MASK = {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5};
     public static final int[] FILE_MASK = {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E};
 
@@ -70,36 +71,36 @@ public class BitboardUtils {
 
     }
 
-    public static int computeShamanMoves(final int position, final int allPieces, final int boardState) {
+    public static int computeShamanMoves(final int position, final int allPieces, final int state) {
 
         final int possibleMoves;
 
-        if ((boardState & StatePositions.MOVE_SHAMAN) != 0) {
-            possibleMoves = computeMoveStraight(position, allPieces);
+        if ((state & StatePositions.MOVE_SHAMAN) != 0) {
+            possibleMoves = computeMoveStraight(position, allPieces, state);
         } else {
-            possibleMoves = computeMoveDiagonal(position, allPieces);
+            possibleMoves = computeMoveDiagonal(position, allPieces,state);
         }
 
         final int movesWithExits;
 
         // Handle exits
-        if ((boardState & StatePositions.CURRENT_PLAYER) != 0) {
+        if ((state & StatePositions.CURRENT_PLAYER) != 0) {
             if ((position & RANK_5) != 0) {
                 movesWithExits = possibleMoves | (BitboardPositions.BLUE_EXIT);
             } else {
-                movesWithExits = possibleMoves & ~( BitboardPositions.BLUE_EXIT);
+                movesWithExits = possibleMoves;
             }
         } else {
             if ((position & RANK_1) != 0) {
                 movesWithExits = possibleMoves | ( BitboardPositions.RED_EXIT);
             } else {
-                movesWithExits = possibleMoves & ~( BitboardPositions.RED_EXIT);
+                movesWithExits = possibleMoves;
             }
         }
-        return movesWithExits & (~allPieces) & ALL_POSITIONS;
+        return movesWithExits & (~allPieces) & ALL_POSITIONS_INCLUDING_EXITS;
     }
 
-    private static int computeMoveStraight(final int position, final int otherPieces) {
+    private static int computeMoveStraight(final int position, final int otherPieces, final int state) {
         //   1
         // 4 S 2
         //   3
@@ -119,7 +120,7 @@ public class BitboardUtils {
     }
 
 
-    private static int computeMoveDiagonal(final int position, final int otherPieces) {
+    private static int computeMoveDiagonal(final int position, final int otherPieces, final int state) {
         // 1   3
         //   S
         // 7   5
@@ -194,7 +195,15 @@ public class BitboardUtils {
         final StringBuilder sb1 = new StringBuilder();
         for(int i = 0; i < 32; i++){
             if(fullBinaryRed.charAt(i) != '0'){
-                sb1.append('2');
+                if(fullBinaryBlue.charAt(i) != '1') {
+                    sb1.append('2');
+                } else {
+                    System.out.println("Blue pieces");
+                    BitboardUtils.printBitboard(bluePieces);
+                    System.out.println("Red pieces");
+                    BitboardUtils.printBitboard(redPieces);
+                    throw new RuntimeException("Piece positions clashing");
+                }
             } else {
                 sb1.append(fullBinaryBlue.charAt(i));
             }
@@ -202,8 +211,8 @@ public class BitboardUtils {
 
         final String fullBinary = sb1.toString();
 
-        final char redExitBit = fullBinary.charAt(5);
-        final char blueExitBit = fullBinary.charAt(31);
+        final char redExitBit = fullBinaryRed.charAt(31);
+        final char blueExitBit = fullBinary.charAt(5);
 
         final String binary = fullBinary.substring(6).substring(0, 25);
 
@@ -220,7 +229,7 @@ public class BitboardUtils {
 
             System.out.println(sb);
         });
-        System.out.println(redExitBit);
+        System.out.println(redExitBit == '1' ? 2 : 0);
         System.out.println("----------------------------------");
 
     }
@@ -239,7 +248,7 @@ public class BitboardUtils {
 
         System.out.println("----------------------------------");
         System.out.println("Board: " + fullBinary);
-        System.out.println(redExitBit);
+        System.out.println(blueExitBit);
         rows.stream().forEach(row -> {
             final StringBuilder sb = new StringBuilder();
             Collections.reverse(row);
@@ -247,7 +256,7 @@ public class BitboardUtils {
 
             System.out.println(sb);
         });
-        System.out.println(blueExitBit);
+        System.out.println(redExitBit);
 
         printBitboardBinary(bitboard);
         System.out.println("----------------------------------");

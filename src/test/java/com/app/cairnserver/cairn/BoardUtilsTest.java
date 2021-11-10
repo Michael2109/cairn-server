@@ -23,7 +23,7 @@ public class BoardUtilsTest {
         return map.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Start");
@@ -32,6 +32,7 @@ public class BoardUtilsTest {
         while (sc.hasNextLine()) {
             sc.nextLine();
             System.out.println("Turn: " + (blue ? "Blue" : "Red"));
+            System.out.println(nextMove.blueScore + " : " + nextMove.redScore);
             nextMove = MinMaxTemplate.minimaxDecision(new Node(nextMove, 0, blue)).board();
 
             System.out.println(blue ? BoardUtils.scoreBoard(nextMove, blue) : -BoardUtils.scoreBoard(nextMove, blue));
@@ -64,6 +65,12 @@ public class BoardUtilsTest {
         Assertions.assertEquals(Stream.of(BitboardPositions.RED_EXIT, BitboardPositions.B2, BitboardPositions.D2).collect(Collectors.toSet()), getValuesFromMultimap(BoardUtils.getPossibleMoves(new Board(0, 0, BitboardPositions.C1))));
         Assertions.assertEquals(Stream.of(BitboardPositions.RED_EXIT, BitboardPositions.C2, BitboardPositions.E2).collect(Collectors.toSet()), getValuesFromMultimap(BoardUtils.getPossibleMoves(new Board(0, 0, BitboardPositions.D1))));
         Assertions.assertEquals(Stream.of(BitboardPositions.RED_EXIT, BitboardPositions.D2).collect(Collectors.toSet()), getValuesFromMultimap(BoardUtils.getPossibleMoves(new Board(0, 0, BitboardPositions.E1))));
+
+
+        BoardUtils.getPossibleMoves(new Board(
+                0,
+                BitboardPositions.A1 | BitboardPositions.C1 | BitboardPositions.E1,
+                BitboardPositions.A5 | BitboardPositions.C5 | BitboardPositions.E5)).entrySet().forEach(entry -> entry.getValue().forEach(move -> BitboardUtils.printBitboard(move)));
     }
 
     @Test
@@ -90,42 +97,66 @@ public class BoardUtilsTest {
         final Board e5Board = new Board(StatePositions.CURRENT_PLAYER, BitboardPositions.E5, 0);
         final Board e5BoardMoved = BoardUtils.movePiece(e5Board, BitboardPositions.E5, BitboardPositions.BLUE_EXIT);
 
-        Assertions.assertEquals(0, a5BoardMoved.bluePieces);
-        Assertions.assertEquals(1, a5BoardMoved.blueScore);
-        Assertions.assertEquals(0, b5BoardMoved.bluePieces);
-        Assertions.assertEquals(1, b5BoardMoved.blueScore);
-        Assertions.assertEquals(0, c5BoardMoved.bluePieces);
-        Assertions.assertEquals(1, c5BoardMoved.blueScore);
-        Assertions.assertEquals(0, d5BoardMoved.bluePieces);
-        Assertions.assertEquals(1, d5BoardMoved.blueScore);
-        Assertions.assertEquals(0, e5BoardMoved.bluePieces);
-        Assertions.assertEquals(1, e5BoardMoved.blueScore);
+        Assertions.assertEquals(BitboardPositions.BLUE_EXIT, a5BoardMoved.bluePieces);
+        Assertions.assertEquals(0, a5BoardMoved.blueScore);
+        Assertions.assertEquals(BitboardPositions.BLUE_EXIT, b5BoardMoved.bluePieces);
+        Assertions.assertEquals(0, b5BoardMoved.blueScore);
+        Assertions.assertEquals(BitboardPositions.BLUE_EXIT, c5BoardMoved.bluePieces);
+        Assertions.assertEquals(0, c5BoardMoved.blueScore);
+        Assertions.assertEquals(BitboardPositions.BLUE_EXIT, d5BoardMoved.bluePieces);
+        Assertions.assertEquals(0, d5BoardMoved.blueScore);
+        Assertions.assertEquals(BitboardPositions.BLUE_EXIT, e5BoardMoved.bluePieces);
+        Assertions.assertEquals(0, e5BoardMoved.blueScore);
     }
 
     @Test
     public void testMovePieceRedExit() {
 
-        final Board a1Board = new Board(0, BitboardPositions.A1, 0);
+        final Board a1Board = new Board(0, 0, BitboardPositions.A1);
         final Board a1BoardMoved = BoardUtils.movePiece(a1Board, BitboardPositions.A1, BitboardPositions.RED_EXIT);
-        final Board b1Board = new Board(0, BitboardPositions.B1, 0);
+        final Board b1Board = new Board(0, 0, BitboardPositions.B1);
         final Board b1BoardMoved = BoardUtils.movePiece(b1Board, BitboardPositions.B1, BitboardPositions.RED_EXIT);
-        final Board c1Board = new Board(0, BitboardPositions.C1, 0);
+        final Board c1Board = new Board(0, 0, BitboardPositions.C1);
         final Board c1BoardMoved = BoardUtils.movePiece(c1Board, BitboardPositions.C1, BitboardPositions.RED_EXIT);
-        final Board d1Board = new Board(0, BitboardPositions.D1, 0);
+        final Board d1Board = new Board(0, 0, BitboardPositions.D1);
         final Board d1BoardMoved = BoardUtils.movePiece(d1Board, BitboardPositions.D1, BitboardPositions.RED_EXIT);
-        final Board e1Board = new Board(0, BitboardPositions.E1, 0);
+        final Board e1Board = new Board(0, 0, BitboardPositions.E1);
         final Board e1BoardMoved = BoardUtils.movePiece(e1Board, BitboardPositions.E1, BitboardPositions.RED_EXIT);
 
-        Assertions.assertEquals(0, a1BoardMoved.redPieces);
-        Assertions.assertEquals(1, a1BoardMoved.redScore);
-        Assertions.assertEquals(0, b1BoardMoved.redPieces);
-        Assertions.assertEquals(1, b1BoardMoved.redScore);
-        Assertions.assertEquals(0, c1BoardMoved.redPieces);
-        Assertions.assertEquals(1, c1BoardMoved.redScore);
-        Assertions.assertEquals(0, d1BoardMoved.redPieces);
-        Assertions.assertEquals(1, d1BoardMoved.redScore);
-        Assertions.assertEquals(0, e1BoardMoved.redPieces);
-        Assertions.assertEquals(1, e1BoardMoved.redScore);
+        Assertions.assertEquals(BitboardPositions.RED_EXIT, a1BoardMoved.redPieces);
+        Assertions.assertEquals(0, a1BoardMoved.redScore);
+        Assertions.assertEquals(BitboardPositions.RED_EXIT, b1BoardMoved.redPieces);
+        Assertions.assertEquals(0, b1BoardMoved.redScore);
+        Assertions.assertEquals(BitboardPositions.RED_EXIT, c1BoardMoved.redPieces);
+        Assertions.assertEquals(0, c1BoardMoved.redScore);
+        Assertions.assertEquals(BitboardPositions.RED_EXIT, d1BoardMoved.redPieces);
+        Assertions.assertEquals(0, d1BoardMoved.redScore);
+        Assertions.assertEquals(BitboardPositions.RED_EXIT, e1BoardMoved.redPieces);
+        Assertions.assertEquals(0, e1BoardMoved.redScore);
+    }
+
+    @Test
+    public void testRefreshBoardBlue() {
+
+        final Board board = new Board(StatePositions.CURRENT_PLAYER, BitboardPositions.BLUE_EXIT, 0);
+        final Board boardRefreshed = BoardUtils.refreshBoard(board);
+
+        Assertions.assertEquals(0, boardRefreshed.bluePieces);
+        Assertions.assertEquals(1, boardRefreshed.blueScore);
+        Assertions.assertEquals(0, boardRefreshed.redPieces);
+        Assertions.assertEquals(0, boardRefreshed.redScore);
+    }
+
+    @Test
+    public void testRefreshBoardRed() {
+
+        final Board board = new Board(0, 0, BitboardPositions.RED_EXIT);
+        final Board boardRefreshed = BoardUtils.refreshBoard(board);
+
+        Assertions.assertEquals(0, boardRefreshed.bluePieces);
+        Assertions.assertEquals(0, boardRefreshed.blueScore);
+        Assertions.assertEquals(0, boardRefreshed.redPieces);
+        Assertions.assertEquals(1, boardRefreshed.redScore);
     }
 
 

@@ -1,6 +1,7 @@
 package com.app.cairnserver.cairn.ai;
 
 import com.app.cairnserver.cairn.bits.BitboardUtils;
+import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
 import com.app.cairnserver.cairn.board.Board;
 import com.app.cairnserver.cairn.board.BoardUtils;
 
@@ -19,7 +20,9 @@ public record Node(Board board, int step, boolean blue) {
 
         allPossibleMoves.entrySet().forEach(moves -> {
             moves.getValue().forEach(target -> {
-                allBoardMoves.add(BoardUtils.movePiece(board, moves.getKey(), target));
+                final Board movedBoard = BoardUtils.movePiece(board, moves.getKey(), target);
+
+                allBoardMoves.add(movedBoard);
             });
         });
 
@@ -28,14 +31,14 @@ public record Node(Board board, int step, boolean blue) {
         }
 
         allBoardMoves.forEach(board -> {
-            actions.add(new Node(board, step + 1, blue));
+            actions.add(new Node(BoardUtils.refreshBoard(board), step + 1, blue));
         });
 
         return actions;
     }
 
     public boolean isTerminal() {
-        return board.blueScore == 4 || board.redScore == 4 || step > 3;
+        return board.blueScore == 4 || board.redScore == 4 || step > 1;
     }
 
     public double getUtility() {

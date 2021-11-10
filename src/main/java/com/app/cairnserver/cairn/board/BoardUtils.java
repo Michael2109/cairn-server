@@ -4,13 +4,16 @@ import com.app.cairnserver.cairn.bits.BitboardUtils;
 import com.app.cairnserver.cairn.bits.StateUtils;
 import com.app.cairnserver.cairn.bits.positions.BitboardPositions;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BoardUtils {
 
-    private static final int SCORE_MULTIPLIER = 500;
+    private static final int SCORE_MULTIPLIER = 1000;
     private static final int RANK_MULTIPLIER = 10;
 
     public static Map<Integer, Collection<Integer>> getPossibleMoves(final Board board) {
@@ -37,9 +40,9 @@ public class BoardUtils {
 
                     final int move = entry.getValue() & 1 << j;
 
-                    if(!individualMoves.containsKey(entry.getKey())){
+                    if (!individualMoves.containsKey(entry.getKey())) {
                         individualMoves.put(entry.getKey(), Stream.of(move).collect(Collectors.toSet()));
-                    }else {
+                    } else {
                         individualMoves.get(entry.getKey()).add(move);
                     }
                 }
@@ -76,38 +79,47 @@ public class BoardUtils {
 
         if ((BitboardUtils.computeShamanMoves(startPosition, board.allPieces, board.state) & endPosition) != 0) {
 
-            int bluePieces;
-            int redPieces;
-            int blueScore = board.blueScore;
-            int redScore = board.redScore;
+            final int bluePieces;
+            final int redPieces;
 
             // Blue
             if (StateUtils.getCurrentPlayer(board.state)) {
-
                 bluePieces = (board.bluePieces & ~startPosition) | endPosition;
                 redPieces = board.redPieces;
-
-                if ((bluePieces & BitboardPositions.BLUE_EXIT) != 0) {
-                    bluePieces = bluePieces & ~BitboardPositions.BLUE_EXIT;
-                    blueScore++;
-                }
             } else {
                 // Red
                 bluePieces = board.bluePieces;
                 redPieces = (board.redPieces & ~startPosition) | endPosition;
-
-                if ((redPieces & BitboardPositions.RED_EXIT) != 0) {
-                    redPieces = redPieces & ~BitboardPositions.RED_EXIT;
-                    redScore++;
-                }
             }
 
-            return new Board(StateUtils.changeMoveShaman(StateUtils.changePlayer(board.state)), blueScore, redScore, bluePieces, redPieces, board.bluePiecesInPlay, board.redPiecesInPlay);
+            return new Board(StateUtils.changeMoveShaman(StateUtils.changePlayer(board.state)), board.blueScore, board.redScore, bluePieces, redPieces, board.bluePiecesInPlay, board.redPiecesInPlay);
 
 
         } else {
             throw new RuntimeException("Move not allowed!");
         }
+    }
+
+    public static Board refreshBoard(final Board board) {
+
+        int bluePieces = board.bluePieces;
+        int redPieces = board.redPieces;
+        int blueScore = board.blueScore;
+        int redScore = board.redScore;
+
+        // Blue
+        if ((bluePieces & BitboardPositions.BLUE_EXIT) != 0) {
+            bluePieces = bluePieces & ~BitboardPositions.BLUE_EXIT;
+            blueScore++;
+        }
+
+        // Red
+        if ((redPieces & BitboardPositions.RED_EXIT) != 0) {
+            redPieces = redPieces & ~BitboardPositions.RED_EXIT;
+            redScore++;
+        }
+
+        return new Board(board.state, blueScore, redScore, bluePieces, redPieces, board.bluePiecesInPlay, board.redPiecesInPlay);
     }
 
     public static double scoreBlueBitboard(final int bluePieces, final int redPieces) {

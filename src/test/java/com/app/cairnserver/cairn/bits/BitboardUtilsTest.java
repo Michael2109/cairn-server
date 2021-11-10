@@ -36,6 +36,13 @@ public class BitboardUtilsTest {
         Assertions.assertEquals(0b00000100010000010000000000000000, BitboardUtils.computeShamanMoves( BitboardPositions.A5,  0, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
         Assertions.assertEquals(0b00000000000000000000010000010001, BitboardUtils.computeShamanMoves( BitboardPositions.E1,  0, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
         Assertions.assertEquals(0b00000101000100000000000000000000, BitboardUtils.computeShamanMoves(BitboardPositions.E5,  0, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
+
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves(BitboardPositions.C3,  BitboardPositions.C2 | BitboardPositions.C4 | BitboardPositions.B3 | BitboardPositions.D3, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves(BitboardPositions.A1,  BitboardPositions.A2 | BitboardPositions.B1, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
+        Assertions.assertEquals(BitboardPositions.BLUE_EXIT, BitboardUtils.computeShamanMoves( BitboardPositions.A5,  BitboardPositions.B5 | BitboardPositions.A4, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
+        BitboardUtils.printBitboard(BitboardUtils.computeShamanMoves( BitboardPositions.E1,  BitboardPositions.D1 | BitboardPositions.E2, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.E1,  BitboardPositions.D1 | BitboardPositions.E2, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
+        Assertions.assertEquals(BitboardPositions.BLUE_EXIT, BitboardUtils.computeShamanMoves(BitboardPositions.E5,  BitboardPositions.D5 | BitboardPositions.E4, StatePositions.CURRENT_PLAYER | StatePositions.MOVE_SHAMAN));
     }
 
     @Test
@@ -45,6 +52,13 @@ public class BitboardUtilsTest {
         Assertions.assertEquals(0b00001100000000100000000000000000, BitboardUtils.computeShamanMoves( BitboardPositions.A5,  0, StatePositions.CURRENT_PLAYER));
         Assertions.assertEquals(0b000000000000000000000001000000000, BitboardUtils.computeShamanMoves( BitboardPositions.E1,  0, StatePositions.CURRENT_PLAYER));
         Assertions.assertEquals(0b00000100000010000000000000000000, BitboardUtils.computeShamanMoves( BitboardPositions.E5,  0, StatePositions.CURRENT_PLAYER));
+
+
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.C3,  0, StatePositions.CURRENT_PLAYER));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves(BitboardPositions.A1,  0, StatePositions.CURRENT_PLAYER));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.A5,  0, StatePositions.CURRENT_PLAYER));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.E1,  0, StatePositions.CURRENT_PLAYER));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.E5,  0, StatePositions.CURRENT_PLAYER));
     }
 
     @Test
@@ -54,6 +68,12 @@ public class BitboardUtilsTest {
         Assertions.assertEquals(0b00000100010000010000000000000000, BitboardUtils.computeShamanMoves( BitboardPositions.A5, 0, StatePositions.MOVE_SHAMAN));
         Assertions.assertEquals(0b00000000000000000000010000010001, BitboardUtils.computeShamanMoves(BitboardPositions.E1, 0, StatePositions.MOVE_SHAMAN));
         Assertions.assertEquals(0b00000001000100000000000000000000, BitboardUtils.computeShamanMoves( BitboardPositions.E5, 0, StatePositions.MOVE_SHAMAN));
+
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves(BitboardPositions.C3, 0, StatePositions.MOVE_SHAMAN));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves(BitboardPositions.A1, 0, StatePositions.MOVE_SHAMAN));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.A5, 0, StatePositions.MOVE_SHAMAN));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves(BitboardPositions.E1, 0, StatePositions.MOVE_SHAMAN));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.E5, 0, StatePositions.MOVE_SHAMAN));
     }
 
     @Test
@@ -66,6 +86,16 @@ public class BitboardUtilsTest {
         Assertions.assertEquals(0b00000000000000000000001000000001, BitboardUtils.computeShamanMoves( BitboardPositions.E1, 0, 0));
         Assertions.assertEquals(0b00001000000000100000000000000000, BitboardUtils.computeShamanMoves( BitboardPositions.A5, 0, 0));
         Assertions.assertEquals(0b00000000000010000000000000000000, BitboardUtils.computeShamanMoves(BitboardPositions.E5, 0, 0));
+
+
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves(BitboardPositions.C3, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.A1, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.B1, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.C1, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.D1, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.E1, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves( BitboardPositions.A5, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeShamanMoves(BitboardPositions.E5, 0, 0));
     }
 
     @Test
