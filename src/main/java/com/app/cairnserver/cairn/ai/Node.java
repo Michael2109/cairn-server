@@ -38,7 +38,7 @@ public record Node(Board board, int step, boolean blue) {
     }
 
     public boolean isTerminal() {
-        return board.blueScore == 4 || board.redScore == 4 || step > 1;
+        return board.blueScore == 4 || board.redScore == 4 || step > 9;
     }
 
     public double getUtility() {
