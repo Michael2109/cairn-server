@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChessServerApplication {
+public class CairnServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChessServerApplication.class, args);
+		SpringApplication.run(CairnServerApplication.class, args);
 	}
 
 }

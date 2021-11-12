@@ -2,21 +2,21 @@ package com.app.cairnserver.model.actions;
 
 public class MovePiece {
 
-    private Position source, target;
+    private int source, target;
 
-    public Position getSource() {
+    public int getSource() {
         return source;
     }
 
-    public Position getTarget() {
+    public int getTarget() {
         return target;
     }
 
     @Override
     public String toString() {
         return "MovePiece{" +
-                "source=" + source +
-                ", target=" + target +
+                "source=" + Integer.toBinaryString(source) +
+                ", target=" + Integer.toBinaryString(target) +
                 '}';
     }
 }

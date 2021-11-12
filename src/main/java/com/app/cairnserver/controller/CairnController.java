@@ -10,9 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Controller
-public class ChessController {
+public class CairnController {
 
-    private final Board chessBoard = new Board();
+    private final Board board = new Board();
 
     @Autowired
     private SimpMessagingTemplate template;
@@ -23,15 +23,15 @@ public class ChessController {
     public Board movePiece(final MovePiece movePiece) throws Exception {
 
         //chessBoard.movePiece(movePiece);
-        this.template.convertAndSend("/topic/movePiece", chessBoard);
+        this.template.convertAndSend("/topic/movePiece", board);
 
-        return chessBoard;
+        return board;
     }
-/*
-    @MessageMapping("/validMoves")
-    @SendTo("/topic/validMoves")
+
+    @MessageMapping("/board")
+    @SendTo("/topic/board")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Collection<Position> getValidMoves(final Position position) throws Exception {
-        return null;
-    }*/
+    public Board getBoard() {
+        return board;
+    }
 }
